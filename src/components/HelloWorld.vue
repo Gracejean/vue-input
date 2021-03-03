@@ -2,7 +2,7 @@
 
     <div id="num" >
      <Money v-model="price"></Money>
-      <p>Value: {{ price }}</p>
+      <p>Value: {{ price.replaceAll(',', '').split('').join("") }}</p>
     </div>
 </template>
 
@@ -20,14 +20,12 @@ export default {
     }
 }
 
-
   
 
 
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 </style>

@@ -1,40 +1,57 @@
 <template>
 
     <div  id="num">
-     <input v-model="displayValue" @blur="isInputActive = false" @focus="isInputActive=true"/>
+     <input v-model="displayValue" v-on:keypress="characters" v-on:keyup="check" />
     </div>
 </template>
 
 <script>
 export default {
     name:'Money',
+    data () {
+      return {
+        displayValue: null,
+      }
+    },
+
    props:["value"],
-    computed:{
-    displayValue:{
-      get: function(){
-        if(this.isInputActive){
-          return this.value.toString()
-        }else {
-          return this.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-        }
-      },
-      set: function(modifiedValue){
-        let newValue = parseInt(modifiedValue.replace(/[^\d]/g, ""))
-        if(isNaN(newValue)){
-          newValue=0
-        }
-        this.$emit('input', newValue)
+  methods:{
+    check () {
+      console.log(this.displayValue);
+       if (this.displayValue[0] == 0 && this.displayValue[1]== 0 ){
+         this.displayValue = null
+
+   }else{
+     this.displayValue = this.displayValue.replace(/^0+/, '').replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      this.$emit('input',this.displayValue)
+
+   }
+    },
+
+    characters(evt) { 
+      
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      console.log(evt);
+      if (charCode > 31 &&  charCode > 57 && charCode !== 46 ) {
+        evt.preventDefault();
+   
+
+   }
+       else {
+        return true;
       }
     }
-  }
+
+
+  
 }
+  
 
-
-
+}
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
